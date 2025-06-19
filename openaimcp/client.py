@@ -138,9 +138,9 @@ class MCPOpenAIClient:
                 tool_choice="none",  # Don't allow more tool calls
             )
 
-            return final_response.choices[0].message.content
+            return f"(MCP) {final_response.choices[0].message.content}"
 
-        # ツールの呼び出しはなく、ダイレクト・レスポンスを返すだけ
+        # ツールの呼び出しはなく、LLMから直接レスポンスを返すだけ
         return assistant_message.content
 
     async def cleanup(self):
@@ -149,18 +149,21 @@ class MCPOpenAIClient:
 
 
 async def main():
-    """クライアントのメイン・エントリー・ポイント."""
     client = MCPOpenAIClient()
     await client.connect_to_server("server.py")
 
-    # 例 会社の休暇制度について尋ねる
-    query = "当社の休暇制度について?"
-    print(f"\nQuery: {query}")
+    try:
+        while True:
+            query = input("\nあなたの質問を入力してください（終了するには 'exit'）：\n> ")
+            if query.strip().lower() in {"exit", "quit"}:
+                break
 
-    response = await client.process_query(query)
-    print(f"\nレスポンス: {response}")
+            response = await client.process_query(query)
+            print(f"\nAIの応答:\n{response}")
+    finally:
+        await client.cleanup()
 
-    await client.cleanup()
+
 
 
 if __name__ == "__main__":

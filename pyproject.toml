@@ -7,6 +7,7 @@ requires-python = ">=3.12"
 dependencies = [
     "docling>=2.37.0",
     "google-generativeai>=0.8.5",
+    "gradio>=5.34.1",
     "ipykernel>=6.29.5",
     "lancedb>=0.23.0",
     "mcp[cli]>=1.9.4",
