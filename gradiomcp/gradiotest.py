@@ -1,11 +1,13 @@
 import asyncio
 import gradio as gr
-import openai
 from dotenv import load_dotenv
 from mcpclient import MCPOpenAIClient
 load_dotenv("../.env")
-client = openai.OpenAI()
 
+client = MCPOpenAIClient()
+
+
+"""
 def chat(user_input, history):
     history.append({"role": "user", "content": user_input})
     
@@ -47,3 +49,34 @@ with gr.Blocks() as demo:
     user_text.submit(respond, [user_text, state], [user_text, bot_response, state,chat_history_display])
 
     demo.launch(share=True)
+"""
+
+async def ask_mcp_async(prompt):  
+    #if not client.running:
+    await client.connect_to_server("server.py")
+    print("Connected to MCP server.")
+      
+    return await client.process_query(prompt)
+
+def ask_mcp_sync(prompt):
+    try:
+        loop = asyncio.get_event_loop()
+        print(f"Current event loop: {loop}")
+        if loop.is_running():
+            # Create a new task and wait for it
+            future = asyncio.ensure_future(ask_mcp_async(prompt))
+            return asyncio.get_event_loop().run_until_complete(future)
+        else:
+            return loop.run_until_complete(ask_mcp_async(prompt))
+    except RuntimeError:
+        return asyncio.run(ask_mcp_async(prompt))
+
+
+print("Starting Gradio UI...")
+gr.Interface(
+    fn=ask_mcp_sync,
+    inputs=gr.Textbox(lines=2, placeholder="Enter your prompt here..."),
+    outputs="text",
+    title="MCP Chatbot UI",
+    description="Talk with an MCP-connected model via Gradio",
+).launch()

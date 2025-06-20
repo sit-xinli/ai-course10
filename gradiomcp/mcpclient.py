@@ -3,7 +3,6 @@ import json
 from contextlib import AsyncExitStack
 from typing import Any, Dict, List, Optional
 
-
 from dotenv import load_dotenv
 from mcp import ClientSession, StdioServerParameters
 from mcp.client.stdio import stdio_client
@@ -29,8 +28,8 @@ class MCPOpenAIClient:
         self.model = model
         self.stdio: Optional[Any] = None
         self.write: Optional[Any] = None
-        self.tools_result=None
-
+        self.running = False
+        
     async def connect_to_server(self, server_script_path: str = "server.py"):
         """MCPサーバーに接続する.
 
@@ -55,12 +54,13 @@ class MCPOpenAIClient:
         # 接続の初期化
         await self.session.initialize()
 
-        # 使用可能なツールのリスト
         tools_result = await self.session.list_tools()
         print("\nConnected to server with tools:")
         for tool in tools_result.tools:
             print(f"  - {tool.name}: {tool.description}")
-        self.tools_result = tools_result
+
+        self.running = True
+        
               
     async def get_mcp_tools(self) -> List[Dict[str, Any]]:
         """MCPサーバーから利用可能なツールをOpenAIフォーマットで取得する.
@@ -69,8 +69,7 @@ class MCPOpenAIClient:
             OpenAI形式のツールリスト.
         """
         
-        #tools_result = await self.session.list_tools()
-        tools_result = self.tools_result
+        tools_result = await self.session.list_tools()
         return [
             {
                 "type": "function",

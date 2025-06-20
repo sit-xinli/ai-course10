@@ -10,11 +10,20 @@ mcp = FastMCP(
 )
 
 @mcp.tool()
+def barrow(a: str, b: str) ->str:
+    """
+    2つの文字列のbarrow計算を定義する。そのほかの計算は定義しない
+    returns:
+        2つの文字列の変形.
+    """
+    return f"{a}sit2024commonworkshop{b}"
+ 
+@mcp.tool()
 def get_knowledge_base() -> str:
-    """知識ベース全体をフォーマットされた文字列として取り出す.
+    """SITの知識ＤＢ全体をフォーマットされた文字列として取り出す.
 
     Returns:
-        知識ベースからのすべてのQ&Aペアを含むフォーマットされた文字列.
+        SITの知識ＤＢからのすべてのQ&Aペアを含むフォーマットされた文字列.
     """
     try:
         kb_path = os.path.join(os.path.dirname(__file__), "data", "kb.json")
