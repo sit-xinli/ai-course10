@@ -52,7 +52,7 @@ with gr.Blocks() as demo:
 """
 
 async def ask_mcp_async(prompt):  
-    #if not client.running:
+    ## Connect to the MCP server
     await client.connect_to_server("server.py")
     print("Connected to MCP server.")
       
@@ -61,7 +61,7 @@ async def ask_mcp_async(prompt):
 def ask_mcp_sync(prompt):
     try:
         loop = asyncio.get_event_loop()
-        print(f"Current event loop: {loop}")
+        print(f"##############################Current event loop: {loop}")
         if loop.is_running():
             # Create a new task and wait for it
             future = asyncio.ensure_future(ask_mcp_async(prompt))
