@@ -1,3 +1,5 @@
+# uv add mcp dotenv openai nest_asyncio asyncio contextlib
+
 import asyncio
 import json
 from contextlib import AsyncExitStack

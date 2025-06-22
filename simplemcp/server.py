@@ -1,8 +1,6 @@
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 
-#load_dotenv("../.env")
-
 # CMCPサーバーの作成
 mcp = FastMCP(
     name="Calculator",

@@ -1,3 +1,5 @@
+# uv add mcp
+
 import os
 import json
 from mcp.server.fastmcp import FastMCP
