@@ -1,3 +1,5 @@
+
+# uv add dotenv mcp 
 from mcp.server.fastmcp import FastMCP
 from dotenv import load_dotenv
 

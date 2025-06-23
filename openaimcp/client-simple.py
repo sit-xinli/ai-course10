@@ -149,7 +149,7 @@ async def main():
     await connect_to_server("server.py")
 
     # 例 会社の休暇制度について尋ねる
-    query = "当社の休暇制度について?"
+    query = "当社の休暇制度は？"
     print(f"\nQuery: {query}")
 
     response = await process_query(query)

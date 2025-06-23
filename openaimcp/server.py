@@ -1,4 +1,4 @@
-# uv add mcp
+# uv add mcp os
 
 import os
 import json
